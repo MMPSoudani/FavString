@@ -58,7 +58,8 @@ class ProfileUpdateForm(forms.ModelForm):
 
 
 class SearchForm(forms.Form):
-    query = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search the website"}))
+    query = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search the website",
+        "class": "border rounded-lg py-2 px-4 text-lg w-full"}))
 
 
 class CreateRoomForm(forms.Form):

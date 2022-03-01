@@ -16,8 +16,15 @@ class HomeView(View):
 
     def get(self, request):
         context = {
-        "search_form": SearchForm(request.GET or None)
+            "search_form": SearchForm(request.GET or None),
+            "topics": Topic.objects.all(),
+            "rooms": Room.objects.all(),
         }
+        if context.get("search_form").is_valid():
+            query = context.get("search_form").cleaned_data.get("query")
+            context["rooms"] = Room.objects.filter(Q(title__icontains=query) |
+                Q(description__icontains=query) | Q(topic__name__icontains=query) |
+                Q(host__username__icontains=query))
         return render(request, self.template_name, context)
 
 
