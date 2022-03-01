@@ -7,7 +7,29 @@
 {% block content %}
 <main>
     <section>
-        
+        <div>
+            <form action="" method="GET">
+                {{ search_form }}
+            </form>
+        </div>
+    </section>
+
+    <section class="flex">
+        <div class="">
+            <h3>Topics</h3>
+            <hr>
+        </div>
+
+        <div>
+            <h3>Rooms</h3>
+            <hr>
+            <a href="{% url 'main:create_room' %}">Create Room</a>
+        </div>
+
+        <div>
+            <h3>Feeds</h3>
+            <hr>
+        </div>
     </section>
 </main>
 {% endblock content %}

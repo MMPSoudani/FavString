@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Profile, Topic, Room
 from re import compile
 
 
@@ -45,3 +45,35 @@ class RegisterForm(forms.Form):
         if password_1 != password_2:
             raise forms.ValidationError("Passwords do not match")
         return password_2
+
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = "__all__"
+        widgets = {
+            "user": forms.HiddenInput(),
+            "birth_date": forms.DateInput(attrs={"type": "date"})
+        }
+
+
+class SearchForm(forms.Form):
+    query = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search the website"}))
+
+
+class CreateRoomForm(forms.Form):
+    topic = forms.CharField(widget=forms.TextInput())
+    title = forms.CharField(widget=forms.TextInput())
+    description = forms.CharField(required=False, widget=forms.Textarea())
+
+    def clean_topic(self):
+        topic = self.cleaned_data.get("topic").lower()
+        if not Topic.objects.filter(name=topic).exists():
+            Topic.objects.create(name=topic)
+        return topic
+    
+    def clean_title(self):
+        title = self.cleaned_data.get("title").lower()
+        if Room.objects.filter(title=title).exists():
+            raise forms.ValidationError("This room title is already taken")
+        return title

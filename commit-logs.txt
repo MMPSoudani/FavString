@@ -1,3 +1,9 @@
+commit faee09d72fb21e9da9b85897d12fc82a2cbd333d
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 19:42:25 2022 +0330
+
+    Added the full functionalties of Login, Logout and Registerattion
+
 commit 2d492fc6bfba3c049efc86119f8436f694f76c84
 Author: MMPSoudani <mmpsudani@gmail.com>
 Date:   Tue Mar 1 18:33:32 2022 +0330

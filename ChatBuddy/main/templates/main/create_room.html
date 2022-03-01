@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Create Room
+{% endblock title %}
+
+{% block content %}
+<main>
+    <section>
+        <div>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ create_room_form.as_p }}
+                <div>
+                    <a href="{% url 'main:home' %}">Cancel</a>
+                    <button type="submit">Create</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock content %}
