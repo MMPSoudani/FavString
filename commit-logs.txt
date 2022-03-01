@@ -1,3 +1,14 @@
+commit aa752a858a93261f37df7e6d864fded0b456b559
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 17:55:53 2022 +0330
+
+    Created the models
+    
+            - created the models Profile, Topic, Room and Message
+            - modified the model User to use email instead of username
+            - created a signal so that each time a user is created a profile gets created
+            - registerd the models in admin.py
+
 commit 147f2e2133a04234783f1ad22f6724a971a5ef4b
 Author: MMPSoudani <mmpsudani@gmail.com>
 Date:   Tue Mar 1 17:34:21 2022 +0330

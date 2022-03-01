@@ -1,0 +1,21 @@
+{% load static %}
+
+<div>
+    <nav>
+        <div>
+            <a href="">ChatBuddy</a>
+        </div>
+
+        <div>
+            {% if request.user.is_authenticated %}
+                <a href="">
+                    <img src="{{ request.user.profile.avatar.url }}" title="@{{ request.user.username }}">
+                </a>
+                <a href="">Logout</a>
+            {% else %}
+                <img src="{% static 'media/no_image.png' %}" alt="">
+                <a href="">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+</div>
