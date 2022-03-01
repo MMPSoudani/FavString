@@ -3,18 +3,18 @@
 <div>
     <nav>
         <div>
-            <a href="">ChatBuddy</a>
+            <a href="{% url 'main:home' %}">ChatBuddy</a>
         </div>
 
         <div>
             {% if request.user.is_authenticated %}
                 <a href="">
-                    <img src="{{ request.user.profile.avatar.url }}" title="@{{ request.user.username }}">
+                    <img class="w-28" src="{{ request.user.profile.avatar.url }}" title="@{{ request.user.username }}">
                 </a>
-                <a href="">Logout</a>
+                <a href="{% url 'main:logout' %}">Logout</a>
             {% else %}
-                <img src="{% static 'media/no_image.png' %}" alt="">
-                <a href="">Login</a>
+                <img class="w-28" src="{% static 'media/no_image.png' %}" alt="">
+                <a href="{% url 'main:login' %}">Login</a>
             {% endif %}
         </div>
     </nav>
