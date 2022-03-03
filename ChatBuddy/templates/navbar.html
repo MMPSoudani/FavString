@@ -1,19 +1,19 @@
 {% load static %}
 
-<div class="flex">
+<div class="flex flex-row justify-between w-full h-full bg-gray-800 p-3">
     <div>
-        <a href="{% url 'main:home' %}">ChatBuddy</a>
+        <a class="text-white text-4xl" href="{% url 'main:home' %}">ChatBuddy</a>
     </div>
 
-    <div class="flex">
+    <div class="flex flex-row">
         {% if request.user.is_authenticated %}
             <a href="{% url 'main:profile_overview' request.user.username %}">
                 <img class="w-24 rounded-full" src="{{ request.user.profile.avatar.url }}" title="@{{ request.user.username }}">
             </a>
-            <a href="{% url 'main:logout' %}">Logout</a>
+            <a class="text-white text-2xl" href="{% url 'main:logout' %}">Logout</a>
         {% else %}
             <img class="w-24 rounded-full" src="{% static 'media/no_image.png' %}" alt="">
-            <a href="{% url 'main:login' %}">Login</a>
+            <a class="text-white text-2xl" href="{% url 'main:login' %}">Login</a>
         {% endif %}
     </div>
 </div>

@@ -5,10 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.db.models import Q
 
 from .forms import (
-    LoginForm, RegisterForm, SearchForm,
-    CreateRoomForm, ProfileUpdateForm,
+    LoginForm, RegisterForm, SearchForm, CreateRoomForm,
+    ProfileUpdateForm, SendMessageForm, EditRoomForm,
+    EditMessageForm,
 )
-from .models import User, Topic, Room
+from .models import User, Topic, Room, Message
 
 
 class HomeView(View):
@@ -140,3 +141,144 @@ class CreateRoomView(View):
             return redirect("main:home")
         
         return render(request, self.template_name, context)
+
+
+class RoomView(View):
+    template_name = "main/room.html"
+
+    def get(self, request, title):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "sender": request.user,
+            "path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        context["send_message_form"] = SendMessageForm(initial=context)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, title):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "sender": request.user,
+        }
+        context["send_message_form"] = SendMessageForm(request.POST, initial=context)
+        if context.get("send_message_form").is_valid():
+            context.get("send_message_form").save()
+            context.get("room").participants.add(context.get("sender"))
+            return redirect("main:room", title)
+        
+        return render(request, self.template_name, context)
+
+
+class UpdateRoomView(View):
+    template_name = "main/room.html"
+
+    def get(self, request, title):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "path": request.META.get("PATH_INFO").split("/")[-2]
+        }
+
+        form_initial_data = {
+            "title": title,
+            "topic": context.get("room").topic.name,
+            "description": context.get("room").description,
+        }
+        context["edit_room_form"] = EditRoomForm(initial=form_initial_data)
+        return render(request, self.template_name, context)
+    
+    def post(self, request, title):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "path": request.META.get("PATH_INFO").split("/")[-2]
+        }
+
+        form_initial_data = {
+            "title": title,
+            "topic": context.get("room").topic.name,
+            "description": context.get("room").description,
+        }
+        
+        context["edit_room_form"] = EditRoomForm(request.POST, initial=form_initial_data)
+        if context.get("edit_room_form").is_valid():
+            form_data = context.get("edit_room_form").cleaned_data
+            context.get("room").title = form_data.get("title")
+            context.get("room").topic = Topic.objects.get(name=form_data.get("topic"))
+            context.get("room").description = form_data.get("description")
+            context.get("room").save()
+            messages.success(request, "Room Info updated successfully")
+            return redirect("main:room", form_data.get("title"))
+            
+        return render(request, self.template_name, context)
+
+
+class DeleteRoomView(View):
+    temaplte_name = "main/room.html"
+
+    def get(self, request, title):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        return render(request, self.temaplte_name, context)
+    
+    def post(self, request, title):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+        }
+        if Room.objects.filter(Q(topic__name__icontains=context.get("room").topic.name)).count() == 1:
+            topic = Topic.objects.get(name=context.get("room").topic.name)
+            topic.delete()
+        
+        context.get("room").delete()
+        messages.success(request, "The room was deleted successfully")
+        return redirect("main:home")
+
+
+class EditMessageView(View):
+    template_name = "main/room.html"
+
+    def get(self, request, title, pk):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "msg": get_object_or_404(Message, id=pk),
+            "path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        context["edit_msg_form"] = EditMessageForm(instance=context.get("msg"))
+        return render(request, self.template_name, context)
+    
+    def post(self, request, title, pk):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "msg": get_object_or_404(Message, id=pk),
+        }
+        context["edit_msg_form"] = EditMessageForm(request.POST, instance=context.get("msg"))
+        if context.get("edit_msg_form").is_valid():
+            context.get("edit_msg_form").save()
+            messages.success(request, "Your message was edited successfully")
+            return redirect("main:room", title)
+        
+        return render(request, self.template_name, context)
+
+
+class DeleteMessageView(View):
+    template_name = "main/room.html"
+
+    def get(self, request, title, pk):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "msg": get_object_or_404(Message, id=pk),
+            "path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        return render(request, self.template_name, context)
+    
+    def post(self, request, title, pk):
+        context = {
+            "room": get_object_or_404(Room, title=title),
+            "msg": get_object_or_404(Message, id=pk),
+        }
+        if Message.objects.filter(Q(room__title__icontains=title) & Q(sender__username__icontains=request.user.username)).count() == 1:
+            context.get("room").participants.remove(request.user)
+
+        context.get("msg").delete()
+        messages.success(request, "Your message was deleted successfully")
+        return redirect("main:room", title)

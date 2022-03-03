@@ -6,27 +6,27 @@
 
 {% block content %}
 <main>
-    <section>
-        <div class="flex justify-center w-full">
-            <form action="" method="GET">
+    <section class="w-full bg-gray-600 p-3">
+        <div class="flex justify-center">
+            <form class="w-6/12" action="" method="GET">
                 {{ search_form }}
             </form>
         </div>
     </section>
 
-    <section class="flex flex-row justify-center">
-        <div class="flex-initial">
-            <h3>Topics</h3>
+    <section class="flex flex-row w-full justify-center">
+        <div class="w-2/12 bg-gray-300 h-screen">
+            <h3 class="my-3 text-2xl text-center">Topics</h3>
             <hr>
-            <div class="flex flex-col">
-                <div>
+            <div class="flex flex-col p-6 text-lg">
+                <div class="flex justify-between">
                     <span>
                         <a class="text-blue-800 hover:text-blue-500" href="{% url 'main:home' %}">All</a>
                     </span>
                     <span>{{ topics.count }}</span>
                 </div>
                 {% for topic in topics %}
-                    <div>
+                    <div class="flex justify-between">
                         <span>
                             <a class="text-blue-800 hover:text-blue-500" href="{% url 'main:home' %}?query={{ topic.name }}">{{ topic.name|title }}</a>
                         </span>
@@ -36,39 +36,34 @@
             </div>
         </div>
 
-        <div class="flex-initial">
-            <h3>Rooms</h3>
-            <hr>
-
+        <div class="w-8/12">
             {% if request.user.is_authenticated %}
-                <a href="{% url 'main:create_room' %}">Create Room</a>
+                <div class="text-center mt-4 mb-4">
+                    <a class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-xl" href="{% url 'main:create_room' %}">Create Room</a>
+                </div>
             {% endif %}
 
-            <div class="">
+            <div class="grid grid-cols-2 mt-3">
                 {% for room in rooms %}
-                    <div class="flex flex-col border p-5 rounded-lg">
+                    <div class="flex flex-col bg-gray-200 hover:bg-gray-300 border p-5 mx-3 rounded-lg">
                         <span>{{ room.topic.name|title }}</span>
                         <span>{{ room.title|title }}</span>
                         <span><a href="{% url 'main:profile_overview' room.host.username %}">@{{ room.host.username }}</a></span>
                         <span>{{ room.updated|date:"M. d, Y" }}</span>
-
-                        {% if room.description %}
-                            <span>{{ room.description|truncatechars:100 }}</span>
-                        {% else %}
-                            <span>No description is available...</span>
-                        {% endif %}
-
-                        <div class="flex">
-                            <span><a class="text-blue-800 hover:text-blue-500" href="">Participate</a></span>
-                            <span>{{ room.participants.all.count }}</span>
+                        <span>{{ room.description|truncatechars:100 }}</span>
+                        <div class="flex justify-between">
+                            <div>
+                                <a class="text-blue-700 hover:text-blue-400" href="{% url 'main:room' room.title %}">Participate</a>
+                            </div>
+                            <div title="Number of Participants">{{ room.participants.all.count }}</div>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
 
-        <div class="flex-initial">
-            <h3>Recent Feeds</h3>
+        <div class="w-2/12 bg-gray-300 h-screen">
+            <h3 class="my-3 text-2xl text-center">Recent Feeds</h3>
             <hr>
         </div>
     </section>

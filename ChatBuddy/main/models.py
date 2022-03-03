@@ -26,7 +26,7 @@ class Topic(models.Model):
     name = models.CharField(max_length=256)
 
     def __str__(self) -> str:
-        return self.name
+        return f"{self.name}"
 
 
 class Room(models.Model):

@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Profile, Topic, Room
+from .models import User, Profile, Topic, Room, Message
 from re import compile
 
 
@@ -76,5 +76,62 @@ class CreateRoomForm(forms.Form):
     def clean_title(self):
         title = self.cleaned_data.get("title").lower()
         if Room.objects.filter(title=title).exists():
-            raise forms.ValidationError("This room title is already taken")
+            raise forms.ValidationError("This room already exists")
         return title
+    
+    def clean_description(self):
+        description = self.cleaned_data.get("description")
+        if description == "":
+            return "No description is available"
+        return description
+
+
+class SendMessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = "__all__"
+        labels = {
+            "body": "",
+        }
+        widgets = {
+            "room": forms.HiddenInput(),
+            "sender": forms.HiddenInput(),
+            "body": forms.Textarea(attrs={"placeholder": "Type your message...",
+                "class": "border rounded-lg w-8/12 py-2 px-3 h-24"}),
+        }
+
+
+class EditRoomForm(forms.Form):
+    title = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Title",
+        "class": "w-10/12 mb-3 px-2 py-3 rounded-lg"}))
+    topic = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Topic",
+        "class": "w-10/12 mb-3 px-2 py-3 rounded-lg"}))
+    description = forms.CharField(label="", widget=forms.Textarea(attrs={"placeholder": "Description",
+        "class": "w-10/12 h-24 px-2 py-3 rounded-lg"}))
+    
+    def clean_title(self):
+        title = self.cleaned_data.get("title").lower()
+        if "title" in self.changed_data:
+            if Room.objects.filter(title=title).exists():
+                raise forms.ValidationError("This room already exists")
+        return title
+    
+    def clean_topic(self):
+        topic = self.cleaned_data.get("topic").lower()
+        if "topic" in self.changed_data:
+            if not Topic.objects.filter(name=topic).exists():
+                Topic.objects.create(name=topic)
+        return topic
+
+
+class EditMessageForm(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = ["body"]
+        labels = {
+            "body": "",
+        }
+        widgets = {
+            "body": forms.Textarea(attrs={"placeholder": "Edit your message...",
+                "class": "border rounded-lg w-8/12 py-2 px-3 h-24"}),
+        }
