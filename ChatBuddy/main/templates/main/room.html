@@ -34,8 +34,8 @@
 
                     {% if room.host.username == request.user.username %}
                         <div class="flex flex-row w-full justify-center mt-5">
-                            <a class="bg-red-500 text-white hover:bg-red-600 rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
-                            <button class="bg-orange-500 text-white hover:bg-orange-600 rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
+                            <a class="bg-red-500 text-white hover:bg-red-600 text-lg rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
+                            <button class="bg-orange-500 text-white hover:bg-orange-600 text-lg rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
                         </div>
                     {% endif %}
                 </form>
@@ -46,13 +46,13 @@
                     {% csrf_token %}
                     <p class="text-justify text-xl mb-5">Are you sure you want to delete the room: "{{ room.title }}"?</p>
                     <div class="flex flex-row w-full justify-center mt-5">
-                        <a class="bg-orange-600 text-white hover:bg-orange-700 rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
-                        <button class="bg-red-600 text-white hover:bg-red-700 rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
+                        <a class="bg-orange-600 text-white hover:bg-orange-700 text-lg rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
+                        <button class="bg-red-600 text-white hover:bg-red-700 text-lg rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
                     </div>
                 </form>
             </div>
         {% else %}
-            <div class="flex flex-col items-center mt-6">
+            <div class="flex flex-col items-center mt-6 text-xl">
                 <a href="{% url 'main:profile_overview' room.host.username %}">
                     <img class="w-40 rounded-full mb-4" src="{{ room.host.profile.avatar.url }}" title="Host: @{{ room.host.username }}">
                 </a>
@@ -64,8 +64,8 @@
 
             {% if room.host.username == request.user.username %}
                 <div class="flex flex-row w-full justify-center mt-5">
-                    <a class="bg-orange-600 text-white hover:bg-orange-700 rounded-lg mr-2 py-2 px-5" href="{% url 'main:update_room' room.title %}">Update</a>
-                    <a class="bg-red-600 text-white hover:bg-red-700 rounded-lg ml-2 py-2 px-5" href="{% url 'main:del_room' room.title %}">Delete</a>
+                    <a class="bg-orange-600 text-white hover:bg-orange-700 text-lg rounded-lg mr-2 py-2 px-5" href="{% url 'main:update_room' room.title %}">Update</a>
+                    <a class="bg-red-600 text-white hover:bg-red-700 rounded-lg text-lg ml-2 py-2 px-5" href="{% url 'main:del_room' room.title %}">Delete</a>
                 </div>
             {% endif %}
         {% endif %}
@@ -78,8 +78,8 @@
                     {% csrf_token %}
                     {{ edit_msg_form.as_p }}
                     <div class="flex flex-row w-full justify-center mt-5">
-                        <a class="bg-orange-600 text-white hover:bg-orange-700 rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
-                        <button class="bg-red-600 text-white hover:bg-red-700 rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
+                        <a class="bg-orange-600 text-white hover:bg-orange-700 text-lg rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
+                        <button class="bg-red-600 text-white hover:bg-red-700 text-lg rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
                     </div>
                 </form>
             </div>
@@ -88,14 +88,14 @@
                 <form action="" method="post">
                     {% csrf_token %}
                     {{ send_message_form.as_p }}
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-xl" type="submit">Send</button>
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-lg" type="submit">Send</button>
                 </form>
             </div>
         {% endif %}
 
         <div class="flex flex-col m-6 p-6 border rounded-lg">
             {% for message in room.message_set.all %}
-                <div class="border rounded-lg my-3 text-left w-6/12">
+                <div class="border rounded-lg my-3 text-left w-6/12 bg-gray-200">
                     <div class="flex justify-between rounded-t-lg p-3 bg-gray-300 w-full text-lg">
                         <span>
                             <a class="text-blue-700 hover:text-blue-400" href="{% url 'main:profile_overview' message.sender.username %}">@{{ message.sender.username }}</a>
@@ -124,8 +124,8 @@
                     {% csrf_token %}
                     <p class="text-justify text-xl mb-5">Are you sure you want to delete your message?</p>
                     <div class="flex flex-row w-full justify-center mt-5">
-                        <a class="bg-orange-600 text-white hover:bg-orange-700 rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
-                        <button class="bg-red-600 text-white hover:bg-red-700 rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
+                        <a class="bg-orange-600 text-white hover:bg-orange-700 text-lg rounded-lg mr-2 py-2 px-5" href="{% url 'main:room' room.title %}">Cancel</a>
+                        <button class="bg-red-600 text-white hover:bg-red-700 text-lg rounded-lg ml-2 py-2 px-5" type="submit">Confirm</button>
                     </div>
                 </form>
             </div>
@@ -136,7 +136,7 @@
             <div class="grid grid-cols-2 p-6">
                 {% for user in room.participants.all %}
                     <span class="">
-                        <a class="bg-green-600 hover:bg-green-700 text-white text-center text-xl rounded-lg py-2 px-4" href="{% url 'main:profile_overview' user.username %}">@{{ user.username }}</a>
+                        <a class="bg-green-600 hover:bg-green-700 text-white text-center text-xl rounded-lg py-2 px-5" href="{% url 'main:profile_overview' user.username %}">@{{ user.username }}</a>
                     </span>
                 {% endfor %}
             </div>

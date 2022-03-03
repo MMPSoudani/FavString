@@ -18,7 +18,7 @@
         <div class="w-2/12 bg-gray-300 h-screen">
             <h3 class="my-3 text-2xl text-center">Topics</h3>
             <hr>
-            <div class="flex flex-col p-6 text-lg">
+            <div class="flex flex-col p-6 text-lg font-mono font-bold">
                 <div class="flex justify-between">
                     <span>
                         <a class="text-blue-800 hover:text-blue-500" href="{% url 'main:home' %}">All</a>
@@ -38,24 +38,35 @@
 
         <div class="w-8/12">
             {% if request.user.is_authenticated %}
-                <div class="text-center mt-4 mb-4">
-                    <a class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-xl" href="{% url 'main:create_room' %}">Create Room</a>
+                <div class="text-center mt-6">
+                    <a class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-lg text-xl" href="{% url 'main:create_room' %}">Create Room</a>
                 </div>
             {% endif %}
 
-            <div class="grid grid-cols-2 mt-3">
+            <div class="grid grid-cols-2 mt-6">
                 {% for room in rooms %}
-                    <div class="flex flex-col bg-gray-200 hover:bg-gray-300 border p-5 mx-3 rounded-lg">
-                        <span>{{ room.topic.name|title }}</span>
-                        <span>{{ room.title|title }}</span>
-                        <span><a href="{% url 'main:profile_overview' room.host.username %}">@{{ room.host.username }}</a></span>
-                        <span>{{ room.updated|date:"M. d, Y" }}</span>
-                        <span>{{ room.description|truncatechars:100 }}</span>
-                        <div class="flex justify-between">
-                            <div>
-                                <a class="text-blue-700 hover:text-blue-400" href="{% url 'main:room' room.title %}">Participate</a>
+                    <div class="flex flex-col bg-gray-200 border mx-3 rounded-lg">
+                        <div class="flex justify-between bg-gray-300 rounded-t-lg p-3">
+                            <span class="font-mono font-bold text-lg text-gray-600">
+                                By <a class="hover:text-blue-400" href="{% url 'main:profile_overview' room.host.username %}">@{{ room.host.username }}</a>
+                            </span>
+                            <span class="font-mono font-bold text-lg text-gray-600">In {{ room.topic.name|title }}</span>
+                        </div>
+                        <div class="flex flex-col p-5 font-sans">
+                            <span class="text-3xl">{{ room.title|title }}</span>
+                            <span class="text-gray-500">{{ room.updated|date:"M. d, Y" }}</span>
+                            <span class="text-xl">{{ room.description|truncatechars:100 }}</span>
+                            <div class="flex justify-between mt-6">
+                                <div>
+                                    <a class="bg-blue-600 hover:bg-blue-700 rounded-lg text-lg text-white px-5 py-3" href="{% url 'main:room' room.title %}">Participate</a>
+                                </div>
+                                <div>
+                                    No. of Participants:
+                                    <span>
+                                        {{ room.participants.all.count }}
+                                    </span>
+                                </div>
                             </div>
-                            <div title="Number of Participants">{{ room.participants.all.count }}</div>
                         </div>
                     </div>
                 {% endfor %}
@@ -64,7 +75,29 @@
 
         <div class="w-2/12 bg-gray-300 h-screen">
             <h3 class="my-3 text-2xl text-center">Recent Feeds</h3>
-            <hr>
+            <hr class="">
+
+            <div class="p-3">
+                {% for message in all_messages %}
+                    <div class="flex flex-col bg-gray-100 rounded-lg">
+                        <div class="flex justify-between bg-gray-200 rounded-t-lg p-2">
+                            <span>
+                                <a class="hover:text-blue-500" href="{% url 'main:profile_overview' message.sender.username %}">
+                                    @{{ message.sender.username }}
+                                </a>
+                            </span>
+                            <span>
+                                <a class="hover:text-blue-500" href="{% url 'main:room' message.room.title %}">
+                                    {{ message.room.title|title }}
+                                </a>
+                            </span>
+                        </div>
+                        <div class="p-2 text-justify">
+                            <span>{{ message.body|truncatechars:100 }}</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </section>
 </main>

@@ -1,19 +1,19 @@
 {% load static %}
 
-<div class="flex flex-row justify-between w-full h-full bg-gray-800 p-3">
+<div class="flex flex-row justify-between w-full h-full items-center bg-gray-800 p-3">
     <div>
         <a class="text-white text-4xl" href="{% url 'main:home' %}">ChatBuddy</a>
     </div>
 
-    <div class="flex flex-row">
+    <div class="flex flex-row items-center">
         {% if request.user.is_authenticated %}
             <a href="{% url 'main:profile_overview' request.user.username %}">
-                <img class="w-24 rounded-full" src="{{ request.user.profile.avatar.url }}" title="@{{ request.user.username }}">
+                <img class="w-20 rounded-full" src="{{ request.user.profile.avatar.url }}" title="@{{ request.user.username }}">
             </a>
-            <a class="text-white text-2xl" href="{% url 'main:logout' %}">Logout</a>
+            <a class="text-xl bg-gray-200 mx-5 px-5 py-2 rounded-lg hover:bg-gray-300" href="{% url 'main:logout' %}">Logout</a>
         {% else %}
-            <img class="w-24 rounded-full" src="{% static 'media/no_image.png' %}" alt="">
-            <a class="text-white text-2xl" href="{% url 'main:login' %}">Login</a>
+            <img class="w-20 rounded-full" src="{% static 'media/no_image.png' %}" alt="">
+            <a class="text-xl bg-gray-200 mx-5 px-5 py-2 rounded-lg hover:bg-gray-300" href="{% url 'main:login' %}">Login</a>
         {% endif %}
     </div>
 </div>

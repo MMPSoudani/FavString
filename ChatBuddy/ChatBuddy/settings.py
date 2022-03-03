@@ -36,8 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #   Personal Apps
+    #   Personal apps
     "main.apps.MainConfig",
+    # Third party apps
+    "crispy_forms",
+    "crispy_tailwind",
 ]
 
 MIDDLEWARE = [
@@ -130,3 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Personal Configurations
 
 AUTH_USER_MODEL = "main.User"
+CRISPY_TEMPLATE_PACK = "tailwind"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+LOGIN_URL = "main:login"
+LOGIN_REDIRECT_URL = "main:login"

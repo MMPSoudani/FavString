@@ -1,3 +1,30 @@
+commit 0bf741e5297a07bbddb2ce51b08ad642032e845d
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Thu Mar 3 20:21:18 2022 +0330
+
+    Added the room and message functionalities
+    
+            - users can send message in each room
+            - users can edit or delete their own messages
+            - users that have sent a message, will be considered participants
+            - participants list is diaplayed in the room page
+            - if a user deletes their last message, they are removed from participants list
+            - host can update or delete their room
+            - on room deletion, if its topic has only that room, the topic will be deleted
+            - added style to the room.html and home.html file using tailwind css
+
+commit de44a5179a09cd968d4dbae04a6153de4c5f8e8b
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Wed Mar 2 00:55:07 2022 +0330
+
+    Added some functionalities to the home page
+    
+            - completed the search form
+                    - now can search based on room name, room desc, room host and topics
+            - display all the topics in topic section with the number of room with that topic
+            - display the rooms with their details each as a card
+            - added some styling using the Tailwind CSS
+
 commit af528a61809842b465955824734fb21b19ce5d71
 Author: MMPSoudani <mmpsudani@gmail.com>
 Date:   Wed Mar 2 00:05:08 2022 +0330

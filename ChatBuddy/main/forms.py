@@ -51,21 +51,29 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = "__all__"
+        labels = {
+            "full_name": "",
+            "birth_date": "",
+            "bio": "",
+            "avatar": "",
+        }
         widgets = {
             "user": forms.HiddenInput(),
-            "birth_date": forms.DateInput(attrs={"type": "date"})
+            "full_name": forms.TextInput(attrs={"placeholder": "Full Name"}),
+            "birth_date": forms.DateInput(attrs={"type": "date", "placeholder": "Birthdate"}),
+            "bio": forms.Textarea(attrs={"class": "h-24", "placeholder": "Biography"}),
         }
 
 
 class SearchForm(forms.Form):
     query = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Search the website",
-        "class": "border rounded-lg py-2 px-4 text-lg w-full"}))
+        "class": "bg-gray-600 focus:bg-white focus:outline-none border border-gray-400 rounded-lg py-2 px-4 text-xl text-center w-full"}))
 
 
 class CreateRoomForm(forms.Form):
-    topic = forms.CharField(widget=forms.TextInput())
-    title = forms.CharField(widget=forms.TextInput())
-    description = forms.CharField(required=False, widget=forms.Textarea())
+    topic = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Topic"}))
+    title = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Title"}))
+    description = forms.CharField(label="", required=False, widget=forms.Textarea(attrs={"placeholder": "Room description..."}))
 
     def clean_topic(self):
         topic = self.cleaned_data.get("topic").lower()

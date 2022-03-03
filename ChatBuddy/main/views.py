@@ -20,6 +20,7 @@ class HomeView(View):
             "search_form": SearchForm(request.GET or None),
             "topics": Topic.objects.all(),
             "rooms": Room.objects.all(),
+            "all_messages": Message.objects.all()[:10],
         }
         if context.get("search_form").is_valid():
             query = context.get("search_form").cleaned_data.get("query")
@@ -33,6 +34,9 @@ class LoginView(View):
     template_name = "main/login.html"
     
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("main:home")
+        
         context = {
             "login_form": LoginForm(),
         }
@@ -59,6 +63,9 @@ class RegisterView(View):
     template_name = "main/register.html"
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("main:home")
+
         context = {
             "register_form": RegisterForm(),
         }
@@ -79,6 +86,9 @@ class RegisterView(View):
 
 class LogoutView(View):
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("main:home")
+        
         logout(request)
         messages.success(request, "Logged out successfully")
         return redirect("main:home")
@@ -103,6 +113,10 @@ class ProfilUpdateView(View):
             "user": get_object_or_404(User, username=username),
             "path": request.META.get("PATH_INFO").split("/")[-2],
         }
+        if request.user.username != username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+
         context["profile_update_form"] = ProfileUpdateForm(instance=context.get("user").profile)
         return render(request, self.temaplte_name, context)
     
@@ -124,6 +138,9 @@ class CreateRoomView(View):
     template_name = "main/create_room.html"
 
     def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("main:home")
+        
         context = {
             "create_room_form": CreateRoomForm(),
         }
@@ -177,6 +194,9 @@ class UpdateRoomView(View):
             "room": get_object_or_404(Room, title=title),
             "path": request.META.get("PATH_INFO").split("/")[-2]
         }
+        if request.user.username != context.get("room").host.username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
 
         form_initial_data = {
             "title": title,
@@ -219,6 +239,10 @@ class DeleteRoomView(View):
             "room": get_object_or_404(Room, title=title),
             "path": request.META.get("PATH_INFO").split("/")[-2],
         }
+        if request.user.username != context.get("room").host.username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+        
         return render(request, self.temaplte_name, context)
     
     def post(self, request, title):
@@ -243,6 +267,10 @@ class EditMessageView(View):
             "msg": get_object_or_404(Message, id=pk),
             "path": request.META.get("PATH_INFO").split("/")[-2],
         }
+        if request.user.username != context.get("msg").sender.username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+        
         context["edit_msg_form"] = EditMessageForm(instance=context.get("msg"))
         return render(request, self.template_name, context)
     
@@ -269,6 +297,10 @@ class DeleteMessageView(View):
             "msg": get_object_or_404(Message, id=pk),
             "path": request.META.get("PATH_INFO").split("/")[-2],
         }
+        if request.user.username != context.get("msg").sender.username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+        
         return render(request, self.template_name, context)
     
     def post(self, request, title, pk):

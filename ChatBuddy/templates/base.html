@@ -13,11 +13,11 @@
 
     <title>ChatBuddy | {% block title %}{% endblock title %}</title>
 </head>
-<body>
+<body class="bg-gray-100">
     {% include "navbar.html" %}
 
     {% if messages %}
-        <div class="bg-green-400 w-full text-center text-xl py-3">
+        <div class="bg-yellow-400 w-full text-center text-xl py-3">
             {% for message in messages %}
                 <div>{{ message }}</div>
             {% endfor %}

@@ -1,38 +1,86 @@
 {% extends "base.html" %}
+{% load tailwind_filters %}
 
 {% block title %}
     {{ user.username }} Profile
 {% endblock title %}
 
 {% block content %}
-<main class="flex flex-row">
-    <section>
-        <div class="flex flex-row">
-            <div><a href="{% url 'main:profile_overview' user.username %}">Overview</a><hr></div>
-            <div><a href="">Activity</a><hr></div>
-            <div><a href="{% url 'main:profile_update' user.username %}">Update</a><hr></div>
-            <div><a href="">Setting</a><hr></div>
+<main class="grid grid-cols-2 mt-6 w-full">
+    <section class="flex flex-col text-lg items-center">
+        <div class="flex flex-row w-full text-center">
+            {% if path == "overview" %}
+                <div class="w-3/12 p-3 font-bold text-orange-400 border-b-4 border-orange-400">
+            {% else %}
+                <div class="w-3/12 p-3 font-bold text-gray-500 border-b-4 border-gray-500">
+            {% endif %}
+                <a href="{% url 'main:profile_overview' user.username %}">Overview</a>
+            </div>
+
+            {% if path == "activity" %}
+                <div class="w-3/12 p-3 font-bold text-orange-400 border-b-4 border-orange-400">
+            {% else %}
+                <div class="w-3/12 p-3 font-bold text-gray-500 border-b-4 border-gray-500">
+            {% endif %}
+                <a href="">Activity</a>
+            </div>
+
+            {% if request.user.username == user.username %}
+                {% if path == "update" %}
+                    <div class="w-3/12 p-3 font-bold text-orange-400 border-b-4 border-orange-400">
+                {% else %}
+                    <div class="w-3/12 p-3 font-bold text-gray-500 border-b-4 border-gray-500">
+                {% endif %}
+                    <a href="{% url 'main:profile_update' user.username %}">Update</a>
+                </div>
+
+                {% if path == "setting" %}
+                    <div class="w-3/12 p-3 font-bold text-orange-400 border-b-4 border-orange-400">
+                {% else %}
+                    <div class="w-3/12 p-3 font-bold text-gray-500 border-b-4 border-gray-500">
+                {% endif %}
+                    <a href="">Setting</a>
+                </div>
+            {% endif %}
         </div>
 
-        <div>
+        <div class="p-6">
             {% if path == "overview" %}
                 <div class="flex flex-col">
-                    <span>Email: {{ user.email }}</span>
-                    <span>Username: {{ user.username }}</span>
-                    <span>Full Name: {% if user.profile.full_name %}{{ user.profile.full_name }}{% endif %}</span>
-                    <span> Birthdate: {% if user.profile.bidth_date %}{{ user.profile.birth_date }}{% endif %}</span>
-                    <span>Bio: {% if user.profile.bio %}{{ user.profile.bio }}{% endif %}</span>
-                    <span>Date Joined: {{ user.date_joined|date:"M. d, Y" }}</span>
+                    <span class="grid grid-cols-2">
+                        <span>Email: </span>
+                        {{ user.email }}
+                    </span>
+                    <span class="grid grid-cols-2">
+                        <span>Username: </span>
+                        {{ user.username }}
+                    </span>
+                    <span class="grid grid-cols-2">
+                        <span>Full Name: </span>
+                        {% if user.profile.full_name %}{{ user.profile.full_name }}{% endif %}
+                    </span>
+                    <span class="grid grid-cols-2">
+                        <span>Birthdate: </span>
+                        {% if user.profile.bidth_date %}{{ user.profile.birth_date }}{% endif %}
+                    </span>
+                    <span class="grid grid-cols-2">
+                        <span>Bio: </span>
+                        {% if user.profile.bio %}{{ user.profile.bio }}{% endif %}
+                    </span>
+                    <span class="grid grid-cols-2">
+                        <span>Date Joined: </span>
+                        {{ user.date_joined|date:"M. d, Y" }}
+                    </span>
                 </div>
             {% elif path == "activity" %}
             {% elif path == "update" %}
                 <div>
                     <form action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
-                        {{ profile_update_form.as_p }}
-                        <div>
-                            <a href="{% url 'main:profile_overview' user.username %}">Cancel</a>
-                            <button type="submit">Update</button>
+                        {{ profile_update_form|crispy }}
+                        <div class="mt-10">
+                            <a class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" href="{% url 'main:profile_overview' user.username %}">Cancel</a>
+                            <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
@@ -41,7 +89,7 @@
         </div>
     </section>
 
-    <section>
+    <section class="flex flex-col items-center">
         <img class="w-96 rounded-full" src="{{ user.profile.avatar.url }}" alt="">
     </section>
 </main>
