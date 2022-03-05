@@ -22,7 +22,7 @@
   - avatar
 - Creating rooms with specific topic.
 - The host of the room can modify or delete their room.
-  - The modification include changing the room's title, topic and description.
+  - The modification include changing the room's title, topic or description.
 - Sending messages within a room.
 - The sender of a message, can modify or delete their message.
 - The website provides a profile page which contains four sections:
