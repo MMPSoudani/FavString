@@ -16,7 +16,7 @@
                 Room Info
             {% endif %}
         </h3>
-        <hr>
+        <hr class="border-2">
 
         {% if path == "update_room" %}
             <div>
@@ -88,12 +88,14 @@
                 <form action="" method="post">
                     {% csrf_token %}
                     {{ send_message_form.as_p }}
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-lg" type="submit">Send</button>
+                    <div class="mt-3">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-lg" type="submit">Send</button>
+                    </div>
                 </form>
             </div>
         {% endif %}
 
-        <div class="flex flex-col m-6 p-6 border rounded-lg">
+        <div class="flex flex-col m-6 p-6">
             {% for message in room.message_set.all %}
                 <div class="border rounded-lg my-3 text-left w-6/12 bg-gray-200">
                     <div class="flex justify-between rounded-t-lg p-3 bg-gray-300 w-full text-lg">
@@ -131,7 +133,7 @@
             </div>
         {% else %}
             <h3 class="my-3 text-center text-2xl">Participants</h3>
-            <hr class="">
+            <hr class="border-2">
 
             <div class="grid grid-cols-2 p-6">
                 {% for user in room.participants.all %}

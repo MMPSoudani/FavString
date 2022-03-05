@@ -4,8 +4,8 @@ from re import compile
 
 
 class LoginForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput())
-    password = forms.CharField(widget=forms.PasswordInput())
+    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={"placeholder": "Email"}))
+    password = forms.CharField(label="", widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -15,10 +15,10 @@ class LoginForm(forms.Form):
 
 
 class RegisterForm(forms.Form):
-    email = forms.EmailField(widget=forms.EmailInput())
-    username = forms.CharField(widget=forms.TextInput())
-    password_1 = forms.CharField(label="Password", widget=forms.PasswordInput())
-    password_2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput())
+    email = forms.EmailField(label="", widget=forms.EmailInput(attrs={"placeholder": "Email"}))
+    username = forms.CharField(label="", widget=forms.TextInput(attrs={"placeholder": "Username"}))
+    password_1 = forms.CharField(label="", widget=forms.PasswordInput(attrs={"placeholder": "Password"}))
+    password_2 = forms.CharField(label="", widget=forms.PasswordInput(attrs={"placeholder": "Confirm Password"}))
 
     def clean_email(self):
         email = self.cleaned_data.get("email")
@@ -51,17 +51,17 @@ class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = "__all__"
-        labels = {
-            "full_name": "",
-            "birth_date": "",
-            "bio": "",
-            "avatar": "",
-        }
+        # labels = {
+        #     "full_name": "",
+        #     "birth_date": "",
+        #     "bio": "",
+        #     "avatar": "",
+        # }
         widgets = {
             "user": forms.HiddenInput(),
-            "full_name": forms.TextInput(attrs={"placeholder": "Full Name"}),
-            "birth_date": forms.DateInput(attrs={"type": "date", "placeholder": "Birthdate"}),
-            "bio": forms.Textarea(attrs={"class": "h-24", "placeholder": "Biography"}),
+            "full_name": forms.TextInput(),
+            "birth_date": forms.DateInput(attrs={"type": "date"}),
+            "bio": forms.Textarea(attrs={"class": "h-24"}),
         }
 
 
@@ -105,7 +105,7 @@ class SendMessageForm(forms.ModelForm):
             "room": forms.HiddenInput(),
             "sender": forms.HiddenInput(),
             "body": forms.Textarea(attrs={"placeholder": "Type your message...",
-                "class": "border rounded-lg w-8/12 py-2 px-3 h-24"}),
+                "class": "border rounded-lg w-8/12 py-2 px-3 h-24 focus:outline-none"}),
         }
 
 

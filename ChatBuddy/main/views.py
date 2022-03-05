@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 from django.db.models import Q
 
 from .forms import (
@@ -46,8 +47,8 @@ class LoginView(View):
         context = {
             "login_form": LoginForm(request.POST),
         }
-        if self.context.get("login_form").is_valid():
-            form_data = self.context.get("login_form").cleaned_data
+        if context.get("login_form").is_valid():
+            form_data = context.get("login_form").cleaned_data
             auth_user = authenticate(email=form_data.get("email"), password=form_data.get("password"))
             if auth_user:
                 login(request, auth_user)
@@ -105,6 +106,17 @@ class ProfileOverView(View):
         return render(request, self.template_name, context)
 
 
+class ProfileActivityView(View):
+    template_name = "main/profile.html"
+
+    def get(self, request, username):
+        context = {
+            "user": get_object_or_404(User, username=username),
+            "path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        return render(request, self.template_name, context)
+
+
 class ProfilUpdateView(View):
     temaplte_name = "main/profile.html"
 
@@ -132,6 +144,83 @@ class ProfilUpdateView(View):
             return redirect("main:profile_overview", username)
 
         return render(request, self.temaplte_name, context)
+
+
+class ProfileSettingView(View):
+    template_name = "main/profile.html"
+
+    def get(self, request, username):
+        context = {
+            "user": get_object_or_404(User, username=username),
+            "path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        if request.user.username != username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+        
+        return render(request, self.template_name, context)
+
+
+class PasswordChangeView(View):
+    template_name = "main/profile.html"
+
+    def get(self, request, username):
+        context = {
+            "user": get_object_or_404(User, username=username),
+            "path": request.META.get("PATH_INFO").split("/")[-3],
+            "sub_path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        if request.user.username != username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+        
+        context["password_change_form"] = PasswordChangeForm(user=context.get("user"))
+        return render(request, self.template_name, context)
+    
+    def post(self, request, username):
+        context = {
+            "user": get_object_or_404(User, username=username),
+            "path": request.META.get("PATH_INFO").split("/")[-3],
+            "sub_path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        
+        context["password_change_form"] = PasswordChangeForm(request.POST, user=context.get("user"))
+        if context.get("password_change_form").is_valid():
+            user = context.get("password_change_form").save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "Password changed successfully")
+            return redirect("main:profile_overview", username)
+
+        return render(request, self.template_name, context)
+
+
+class DeleteAccountView(View):
+    template_name = "main/profile.html"
+
+    def get(self, request, username):
+        context = {
+            "user": get_object_or_404(User, username=username),
+            "path": request.META.get("PATH_INFO").split("/")[-3],
+            "sub_path": request.META.get("PATH_INFO").split("/")[-2],
+        }
+        if request.user.username != username:
+            messages.error(request, "You are not authorized to perform this action")
+            return redirect("main:home")
+        
+        if request.user.is_superuser:
+            messages.error(request, "Admins cannot delete their account from here")
+            return redirect("main:profile_overview", username)
+        
+        return render(request, self.template_name, context)
+    
+    def post(self, request, username):
+        context = {
+            "user": get_object_or_404(User, username=username),
+        }
+        context.get("user").delete()
+        logout(request)
+        messages.success(request, "Account was deleted successfully")
+        return redirect("main:home")
 
 
 class CreateRoomView(View):

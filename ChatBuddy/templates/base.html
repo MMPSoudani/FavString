@@ -17,11 +17,17 @@
     {% include "navbar.html" %}
 
     {% if messages %}
-        <div class="bg-yellow-400 w-full text-center text-xl py-3">
-            {% for message in messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="bg-red-400 w-full text-center text-xl py-3">
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="bg-green-400 w-full text-center text-xl py-3">
+            {% else %}
+                <div class="bg-yellow-400 w-full text-center text-xl py-3">
+            {% endif %}
                 <div>{{ message }}</div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
     {% endif %}
 
     <div>

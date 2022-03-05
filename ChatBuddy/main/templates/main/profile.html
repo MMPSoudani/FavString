@@ -22,7 +22,7 @@
             {% else %}
                 <div class="w-3/12 p-3 font-bold text-gray-500 border-b-4 border-gray-500">
             {% endif %}
-                <a href="">Activity</a>
+                <a href="{% url 'main:profile_activity' user.username %}">Activity</a>
             </div>
 
             {% if request.user.username == user.username %}
@@ -39,52 +39,114 @@
                 {% else %}
                     <div class="w-3/12 p-3 font-bold text-gray-500 border-b-4 border-gray-500">
                 {% endif %}
-                    <a href="">Setting</a>
+                    <a href="{% url 'main:profile_setting' user.username %}">Setting</a>
                 </div>
             {% endif %}
         </div>
 
         <div class="p-6">
             {% if path == "overview" %}
-                <div class="flex flex-col">
-                    <span class="grid grid-cols-2">
-                        <span>Email: </span>
+                <div class="flex flex-col w-full">
+                    <span class="grid grid-cols-2 border-2 rounded-lg mb-3 p-3">
+                        <span class="font-mono text-xl font-bold text-gray-500">Email</span>
                         {{ user.email }}
                     </span>
-                    <span class="grid grid-cols-2">
-                        <span>Username: </span>
+                    <span class="grid grid-cols-2 border-2 rounded-lg mb-3 p-3">
+                        <span class="font-mono text-xl font-bold text-gray-500">Username</span>
                         {{ user.username }}
                     </span>
-                    <span class="grid grid-cols-2">
-                        <span>Full Name: </span>
+                    <span class="grid grid-cols-2 border-2 rounded-lg mb-3 p-3">
+                        <span class="font-mono text-xl font-bold text-gray-500">Full Name</span>
                         {% if user.profile.full_name %}{{ user.profile.full_name }}{% endif %}
                     </span>
-                    <span class="grid grid-cols-2">
-                        <span>Birthdate: </span>
-                        {% if user.profile.bidth_date %}{{ user.profile.birth_date }}{% endif %}
+                    <span class="grid grid-cols-2 border-2 rounded-lg mb-3 p-3">
+                        <span class="font-mono text-xl font-bold text-gray-500">Birthdate</span>
+                        {% if user.profile.birth_date %}{{ user.profile.birth_date|date:"M. d, Y" }}{% endif %}
                     </span>
-                    <span class="grid grid-cols-2">
-                        <span>Bio: </span>
-                        {% if user.profile.bio %}{{ user.profile.bio }}{% endif %}
+                    <span class="grid grid-cols-2 border-2 rounded-lg mb-3 p-3">
+                        <span class="font-mono text-xl font-bold text-gray-500">Bio</span>
+                        {% if user.profile.bio %}{{ user.profile.bio|linebreaks }}{% endif %}
                     </span>
-                    <span class="grid grid-cols-2">
-                        <span>Date Joined: </span>
+                    <span class="grid grid-cols-2 border-2 rounded-lg mb-3 p-3">
+                        <span class="font-mono text-xl font-bold text-gray-500">Date Joined</span>
                         {{ user.date_joined|date:"M. d, Y" }}
                     </span>
                 </div>
             {% elif path == "activity" %}
+                <div class="flex flex-row w-full text-center">
+                    <div class="mr-10 py-3 px-10">
+                        <div class="text-lg font-mono font-bold">Rooms Hosted</div>
+                        <hr class="mb-3 border-2 border-black">
+                        <div>
+                            {% for room in user.room_set.all %}
+                                <div class="">
+                                    <a class="text-blue-800 hover:text-blue-500" href="{% url 'main:room' room.title %}">{{ room.title|title|truncatechars:50 }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="ml-10 py-3 px-10">
+                        <div class="text-lg font-mono font-bold">Participations</div>
+                        <hr class="mb-3 border-2 border-black">
+                        <div>
+                            {% for message in user.message_set.all %}
+                                <div class="">
+                                    <a class="text-blue-800 hover:text-blue-500" href="{% url 'main:room' message.room.title %}">{{ message.room.title|title|truncatechars:50 }}</a>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
             {% elif path == "update" %}
-                <div>
+                <div class="">
                     <form action="" method="post" enctype="multipart/form-data">
                         {% csrf_token %}
                         {{ profile_update_form|crispy }}
-                        <div class="mt-10">
+                        <div class="flex flex-row justify-center mt-10">
                             <a class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" href="{% url 'main:profile_overview' user.username %}">Cancel</a>
                             <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" type="submit">Update</button>
                         </div>
                     </form>
                 </div>
             {% elif path == "setting" %}
+                <div class="flex flex-row">
+                    {% if sub_path == "change_password" %}
+                        <div class="mr-10 py-3 px-10">
+                            <div class="font-mono font-bold text-center">Change Your Password</div>
+                            <hr class="mb-3 border-2 border-black">
+                            <div>
+                                <form action="" method="post">
+                                    {{ password_change_form|crispy }}
+                                    <div class="flex justify-center mt-3">
+                                        <a class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 mr-2 rounded-lg text-lg" href="{% url 'main:profile_setting' user.username %}">Cancel</a>
+                                        <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-lg text-lg" type="submit">Confirm</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    {% elif sub_path == "delete_account" %}
+                        <div class="ml-10 py-3 px-10">
+                            <div class="font-mono font-bold text-center">Delete Account</div>
+                            <hr class="mb-3 border-2 border-black">
+                            <form action="" method="post">
+                                <p>Permenantly Delete Your Account?</p>
+                                <div class="flex flex-row justify-center mt-3">
+                                    <a class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 mr-2 rounded-lg text-lg" href="{% url 'main:profile_setting' user.username %}">Cancel</a>
+                                    <button class="bg-red-500 hover:bg-red-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" type="submit">Delete</button>
+                                </div>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="flex flex-row mt-10">
+                            <div>
+                                <a class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 mr-4 rounded-lg text-lg" href="{% url 'main:change_password' user.username %}">Change your password</a>
+                            </div>
+                            <div>
+                                <a class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-3 mr-4 rounded-lg text-lg" href="{% url 'main:delete_account' user.username %}">Delete your account</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
             {% endif %}
         </div>
     </section>
