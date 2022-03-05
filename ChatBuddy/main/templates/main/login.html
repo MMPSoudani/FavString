@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block content %}
+<main class="w-full">
+    <section class="flex items-center justify-center mt-20">
+        <div class="border-2 rounded-xl p-10 bg-gray-800 shadow-lg text-center">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ login_form|crispy }}
+                <p class="text-white text-lg">
+                    If you're not a member: 
+                    <a class="hover:text-blue-400" href="{% url 'main:register' %}">register from here</a>
+                </p>
+                <div class="flex flex-row justify-center mt-6">
+                    <a class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" href="{% url 'main:home' %}">Cancel</a>
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 ml-2 rounded-lg text-lg" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock content %}

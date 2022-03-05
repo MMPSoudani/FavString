@@ -1,0 +1,38 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block meta %}
+    {% endblock meta %}
+
+    <title>ChatBuddy | {% block title %}{% endblock title %}</title>
+</head>
+<body class="bg-gray-100">
+    {% include "navbar.html" %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="bg-red-400 w-full text-center text-xl py-3">
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="bg-green-400 w-full text-center text-xl py-3">
+            {% else %}
+                <div class="bg-yellow-400 w-full text-center text-xl py-3">
+            {% endif %}
+                <div>{{ message }}</div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div>
+        {% block content %}
+        {% endblock content %}
+    </div>
+</body>
+</html>

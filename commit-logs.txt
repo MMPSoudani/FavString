@@ -1,0 +1,106 @@
+commit 4891148e8b0b1cc992497224cf016ee26c586bac
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Fri Mar 4 03:19:06 2022 +0330
+
+    Configured some functionalities in home and room pages and added styling
+    
+            - added a safeguard to all views in views.py to prevent un-authorized users to performing critical actions
+            - added crispy-forms to form styling
+            - customized and tweaked the tailwind styling on home.html, room.html and profile.html
+
+commit 0bf741e5297a07bbddb2ce51b08ad642032e845d
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Thu Mar 3 20:21:18 2022 +0330
+
+    Added the room and message functionalities
+    
+            - users can send message in each room
+            - users can edit or delete their own messages
+            - users that have sent a message, will be considered participants
+            - participants list is diaplayed in the room page
+            - if a user deletes their last message, they are removed from participants list
+            - host can update or delete their room
+            - on room deletion, if its topic has only that room, the topic will be deleted
+            - added style to the room.html and home.html file using tailwind css
+
+commit de44a5179a09cd968d4dbae04a6153de4c5f8e8b
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Wed Mar 2 00:55:07 2022 +0330
+
+    Added some functionalities to the home page
+    
+            - completed the search form
+                    - now can search based on room name, room desc, room host and topics
+            - display all the topics in topic section with the number of room with that topic
+            - display the rooms with their details each as a card
+            - added some styling using the Tailwind CSS
+
+commit af528a61809842b465955824734fb21b19ce5d71
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Wed Mar 2 00:05:08 2022 +0330
+
+    Added profile overview, profile update and create room functionalities
+
+commit faee09d72fb21e9da9b85897d12fc82a2cbd333d
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 19:42:25 2022 +0330
+
+    Added the full functionalties of Login, Logout and Registerattion
+
+commit 2d492fc6bfba3c049efc86119f8436f694f76c84
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 18:33:32 2022 +0330
+
+    Created the home view
+    
+            - made migrations
+            - created a super user
+            - wrote the basic structures for base.html, navbar.html and home.html
+            - created a view class for home
+            - gave HomeView a URL link
+
+commit aa752a858a93261f37df7e6d864fded0b456b559
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 17:55:53 2022 +0330
+
+    Created the models
+    
+            - created the models Profile, Topic, Room and Message
+            - modified the model User to use email instead of username
+            - created a signal so that each time a user is created a profile gets created
+            - registerd the models in admin.py
+
+commit 147f2e2133a04234783f1ad22f6724a971a5ef4b
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 17:34:21 2022 +0330
+
+    Configured the project
+    
+            - configured the project settings.py
+            - configured the project urls.py
+            - added commit-logs.txt file to kepp track of commits
+
+commit a6ecf88d11035fd678e9d91fab1f52ccc2bbe8a4
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 17:01:58 2022 +0330
+
+    Created the required folder and files
+    
+            - created the main app
+            - created templates and static folders in root dir
+            - created templates/main folder in main
+            - created base.html and navbar.html files in templates
+            - created css and media folders in static
+            - created style.css file in static/css
+
+commit 6a8f391cb155445547b8860cf1627b52f14528f4
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Tue Mar 1 16:26:09 2022 +0330
+
+    Starting the ChatBuddy project
+    
+            - created a virtual env
+            - installed django Pillow
+            - created django project ChatBuddy
+            - added .gitignore file with content
+            - added requirements.txt file
