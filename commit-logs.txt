@@ -1,3 +1,28 @@
+commit 81d93d16dc8056a617e8b4704a1a8bbd4a96fae1
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Thu Mar 10 06:41:05 2022 +0330
+
+    Added an API for the data using Django Rest Framework
+    
+            - installed djangorestframework
+            - added rest_framework to settings.py
+            - created the api app
+            - added the api to settings.py
+            - included tha api urls in the project ursl.py file
+            - created a serializers.py file in api app
+            - created a serializer for each one of main models
+            - created a generics.ListCreateAPIView and generics.RetrieveUpdateDestroyAPIView views for each model
+            - added a URL link for each view in the urls.py file of api app
+            - created the index.html template in api app to link to each API data model
+            - created a view for index.html
+            - added a URL link for index.html
+
+commit 74c02e5198b12643876b78502600dbe03f08c1a3
+Author: MMPSoudani <mmpsudani@gmail.com>
+Date:   Wed Mar 9 13:26:07 2022 +0330
+
+    Updated the commit log file
+
 commit 476f3b49a4618b83b5d20654fcef1c341a0e63ae
 Author: Mohammad Sudani <87249882+MMPSoudani@users.noreply.github.com>
 Date:   Sat Mar 5 12:44:03 2022 +0330
