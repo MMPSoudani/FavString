@@ -3,11 +3,8 @@
 ## Description:
 - This repository contains the files for the ChatBuddy website.
 - It is written using Django webframework, HTML and Tailwindcss.
-- The website uses four models
-  - Profile
-  - Topic
-  - Room
-  - Message
+- Django rest framework is used to add an API
+  - To access the api, enter the URL api/
 - The User model is modified to use email instead of username for authentication.
 - The website provides the ability to create chat rooms with a spesific topic and allow the users to send messages in them.
 - To style the website, Tailwindcss is used through its CDN link.
@@ -30,3 +27,6 @@
   - Activity: display rooms the user has created and rooms the user has participated in - public access.
   - Update: update profile info - restricted access.
   - Setting: change password or delete account - restricted access.
+- The API allows:
+  - accessing the data in the database for each model separately.
+  - creating, adding, updating and deleting non-sensitive data
