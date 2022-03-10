@@ -38,9 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #   Personal apps
     "main.apps.MainConfig",
+    "api.apps.ApiConfig",
     # Third party apps
     "crispy_forms",
     "crispy_tailwind",
+    "rest_framework"
 ]
 
 MIDDLEWARE = [
