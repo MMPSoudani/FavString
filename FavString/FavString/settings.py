@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     "api.apps.ApiConfig",
     # Third party apps
     "rest_framework",
+    "crispy_forms",
+    "crispy_tailwind",
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,5 @@ MEDIA_ROOT = Path.joinpath(BASE_DIR, "static/media")
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CRISPY_TEMPLATE_PACK = "tailwind"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
