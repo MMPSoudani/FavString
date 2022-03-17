@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home Page
+{% endblock title %}
+
+{% block content %}
+<main>
+    <section class="">
+        <div class="flex justify-center my-6">
+            <a class="bg-blue-600 hover:bg-blue-500 text-white py-4 px-3 text-lg rounded-lg" href="{% url 'main:add_string' %}">Add String</a>
+        </div>
+        <div class="grid grid-cols-4 mx-10">
+            {% for string in strings %}
+                <div class="flex flex-col border rounded-lg p-3 bg-gray-200 shadow-lg mx-4 mb-6">
+                    <div class="flex justify-between">
+                        <span class="">@{{ string.user.username|title|truncatechars:20 }}</span>
+                        <span>{{ string.created|date:"M. d, Y - H:m" }}</span>
+                    </div>
+                    <hr class="border-black mt-3">
+                    <span class="text-lg text-justify my-3">{{ string.string|truncatechars:40 }}</span>
+                    <hr class="border-black mb-3">
+                    <div class="flex flex-row justify-between">
+                        <span class="bg-yellow-600 text-white px-3 py-3 rounded-lg" title="Weight">{{ string.weight }}</span>
+                        <a class="bg-purple-600 hover:bg-purple-500 text-white rounded-lg py-3 px-3" href="{% url 'main:string_overview' string.id %}">favored by: {{string.favored_by.all.count}}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock content %}

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+
+{% block title %}
+    String Overview
+{% endblock title %}
+
+{% block content %}
+<main>
+    <section class="flex justify-center mt-20">
+        <div class="rounded-lg p-10 bg-gray-200 shadow-lg w-6/12 mr-10">
+            <div>
+                <div class="flex justify-between bg-gray-100 p-3 mb-3 rounded-lg">
+                    <span>@{{ string.user.username }}</span>
+                    <span>{{ string.created|date:"M. d, Y - h:m" }}</span>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-lg overflow-scroll h-80">
+                    {{ string.string|linebreaks }}
+                </div>
+            </div>
+            <div class="flex justify-center mt-6">
+                <form class="w-3/12" action="" method="POST">
+                    {% csrf_token %}
+                    {{ like_string_form|crispy }}
+                    <div class="flex">
+                        <a class="bg-blue-600 hover:bg-blue-500 text-lg py-3 px-4 text-white rounded-lg mr-3 mt-3" href="{% url 'main:home' %}">Back</a>
+                        <button class="bg-blue-600 hover:bg-blue-500 text-lg py-3 px-4 text-white rounded-lg ml-3 mt-3" type="submit">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="w-3/12 text-center ml-10">
+            <div class="text-xl">Liked By</div>
+            <hr class="mt-3 border-black">
+            <div class="mt-6 flex">
+                {% for user in string.favored_by.all %}
+                    <span class="bg-green-700 hover:bg-green-600 mx-3 px-4 py-3 rounded-lg text-white text-lg">@{{ user.username }}</span>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock content %}

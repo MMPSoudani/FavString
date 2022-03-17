@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load tailwind_filters %}
+
+{% block title %}
+    Login
+{% endblock title %}
+
+{% block content %}
+<main>
+    <section class="flex justify-center mt-20">
+        <div class="rounded-lg p-10 bg-gray-200 shadow-lg w-3/12">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{ login_form|crispy }}
+                <div>
+                    Create an account from <a class="text-blue-700 hover:text-blue-500" href="{% url 'main:register' %}">here</a>
+                </div>
+                <div class="flex justify-center">
+                    <button class="bg-blue-600 hover:bg-blue-500 text-lg py-3 px-4 text-white rounded-lg mt-6" type="submit">Login</button>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock content %}
