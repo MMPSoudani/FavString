@@ -37,6 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Project apps
+    "main.apps.MainConfig",
+    "api.apps.ApiConfig",
+    # Third party apps
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -54,7 +59,7 @@ ROOT_URLCONF = 'FavString.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [Path.joinpath(BASE_DIR, "templates"),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,6 +121,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILE_DIRS = [
+    Path.joinpath(BASE_DIR, "static"),
+]
+STATIC_ROOT = Path.joinpath(BASE_DIR, "static_root")
+
+MEDIA_URL = "media/"
+MEDIA_ROOT = Path.joinpath(BASE_DIR, "static/media")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
