@@ -10,7 +10,7 @@
     - the date it was created
     - its weight
     - number of people added it to their favorite
-- each time a text message is created its weight is calculated
+- each time a text message is created its weight is calculated through a signal
   - the weight is calculated by adding the ASCII number for each en/EN letters to the total
 - logged in users can add text messages to their favorite list
 - text messages can be opened to view the text message and watch who have added to their favorite
