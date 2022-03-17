@@ -1,5 +1,5 @@
 """
-ASGI config for ChatBuddy project.
+ASGI config for FavString project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ChatBuddy.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'FavString.settings')
 
 application = get_asgi_application()
