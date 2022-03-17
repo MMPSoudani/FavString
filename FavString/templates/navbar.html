@@ -1,0 +1,12 @@
+<main class="bg-gray-700 text-white">
+    <section class="grid grid-cols-2 py-10">
+        <div class="ml-10">
+            <a class="hover:text-yellow-600 text-4xl" href="{% url 'main:home' %}" title="go to home">MyFavString</a>
+        </div>
+        <div class="flex justify-end mr-10">
+            <a class="hover:text-yellow-600 text-xl" href="{% url 'main:login' %}">Login</a>
+            <span class="mx-4">/</span>
+            <a class="hover:text-yellow-600 text-xl" href="{% url 'main:logout' %}">Logout</a>
+        </div>
+    </section>
+</main>

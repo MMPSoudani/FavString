@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} added the tailwindcss CDN link {% endcomment %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FavString | {% block title %}{% endblock title %}</title>
+</head>
+<body>
+    {% include "navbar.html" %}
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                <div class="bg-green-500 text-center text-lg py-2">
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                <div class="bg-blue-500 text-center text-lg py-2">
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <div class="bg-red-500 text-center text-lg py-2">
+            {% else %}
+                <div class="bg-blue-500 text-center text-lg py-2">
+            {% endif %}
+                    {{ message }}
+                </div>
+        {% endfor %}
+    {% endif %}
+ 
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
