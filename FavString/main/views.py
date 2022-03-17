@@ -132,11 +132,11 @@ class StringOverView(View):
         if context.get("like_string_form").is_valid():
             username = context.get("like_string_form").cleaned_data.get("username")
             user = get_object_or_404(User, username=username)
-            if context.get("string").favored_by.get(username=user.username):
+            if context.get("string").favored_by.filter(username=user.username):
                 messages.error(request, f"{user.username} have already liked this post")
                 return redirect("main:string_overview", id)
-            
-            context.get("string").favored_by.add(user)
-            messages.success(request, f"{username} liked \"{context.get('string').string[:20]}...\"")
-            return redirect("main:string_overview", id)
+            else:
+                context.get("string").favored_by.add(user)
+                messages.success(request, f"{username} liked \"{context.get('string').string[:20]}...\"")
+                return redirect("main:string_overview", id)
         return render(request, self.template_name, context)

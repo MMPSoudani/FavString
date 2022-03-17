@@ -71,7 +71,7 @@ class AddStringForm(forms.Form):
 
 
 class LikeStringForm(forms.Form):
-    users = AuthUser.objects.all()
-    choices = [(user.user.username, user.user.username) for user in users]
+    auth_users = AuthUser.objects.all()
+    choices = [(user.user.username, user.user.username) for user in auth_users]
 
     username = forms.ChoiceField(label="", choices=tuple(choices))
