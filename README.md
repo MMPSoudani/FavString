@@ -15,6 +15,10 @@
 - logged in users can add text messages to their favorite list
 - text messages can be opened to view the text message and watch who have added to their favorite
 - logged in users can logout
+## API
+- created an api for all the models
+- the api includes the methods GET, POST, PUT and DELETE for all the models
+- can access the api using the localhost:8000/api/ url link
 ## Display
 ![Home Page](https://github.com/MMPSoudani/FavString/tree/favString/FavString/static/media/HomePage.png)<br>
 ![Login Page](https://github.com/MMPSoudani/FavString/tree/favString/FavString/static/media/LoginPage.png)<br>
